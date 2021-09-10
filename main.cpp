@@ -1,34 +1,71 @@
+#include <list>
 #include <iostream>
-#include <stdlib.h>
+#include <string>
+#include <vector>
 
-int main() {
-  int number = 0;
-  bool check_style_stats = true;
-  while (check_style_stats){
-    std::cout << "Enter a number to determine prime status: ";
-    std::cin >> number;
-    if (number % 2 == 0 || number % 5 == 0) {
-      std::cout << "This number is not prime.";
-      return 0;
+using namespace std;
+  
+int main(int argc, const char * argv[]) {
+  int lower_config = 0;
+  int upper_config = 0;
+  int times_to_sort = 0;
+
+  //Get configs for primes
+  bool get_configs = false;
+
+  while (get_configs != true){
+    cout << "Lower config: ";
+    cin >> lower_config;
+    cout << "Upper config: ";
+    cin >> upper_config;
+    times_to_sort = upper_config - lower_config;
+    get_configs = true;
+  }
+
+  //create vector
+  vector<int> candidates;
+
+  //check for obvious non primes
+  for (int value = lower_config; value <= upper_config; value++){
+    int last_digit = value % 10;
+    int last_test = last_digit % 2;
+    if (last_test == 0 || last_digit == 5){
     } else {
-      check_style_stats = false;
+      candidates.push_back(value);
     }
   }
 
-  int divide_by = 2;
-  bool is_prime = true;
+  cout << "Made list of " << candidates.size() << " candidates long.";
 
-  while (divide_by != (number / 2)){
-      if (number % divide_by == 0){
-            is_prime = false;
-            break;
+  vector<int> isprime;
+  for (int x = 0; x < candidates.size(); x++) {
+    //terribly inefficient but it's getting there
+    //improvements to come (I hope)
+    int value = candidates[x];
+    bool testing = true;
+    bool prime = true;
+    int y = 2;
+    while (testing) {
+      if (value % y == 0){
+        testing = false;
+        prime = false;
+      } else {
+        continue;
       }
-      divide_by++;
+
+      if (prime == true) {
+        isprime.push_back(value);
+      }
+    }
   }
-  if (is_prime) {
-    std::cout << number << " is a prime number!";
-  } else {
-    std::cout << number << " is not prime.";
+
+  cout << "Found " << isprime.size() << " prime numbers in given range: ";
+  for (int x = 0; x < isprime.size(); x++) {
+    int primeNumber = isprime[x];
+    cout << primeNumber;
   }
+
   return 0;
+
 }
+
